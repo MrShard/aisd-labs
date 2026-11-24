@@ -4,11 +4,14 @@
 
 arr = list(map(int, input("Элементы массива через пробел: ").split()))
 
-d = arr[1] - arr[0]
-is_progression = True
-for i in range(2, len(arr)):
-    if arr[i] - arr[i - 1] != d:
-        is_progression = False
-        break                      # дальше проверять не нужно
+if len(arr) < 2:
+    print(0)
+else:
+    d = arr[1] - arr[0]
+    is_progression = True
+    for i in range(2, len(arr)):
+        if arr[i] - arr[i - 1] != d:
+            is_progression = False
+            break
 
-print(d if is_progression else 0)
+    print(d if is_progression else 0)

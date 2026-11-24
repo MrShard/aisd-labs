@@ -3,11 +3,17 @@
 # Без умножения и деления найти длину незанятой части отрезка A.
 # Идея: вычитаем B из A, пока остаток не станет меньше B.
 
-A = float(input("A = "))
-B = float(input("B = "))
+from fractions import Fraction
 
-rest = A
-while rest >= B:
-    rest -= B
+A = Fraction(input("A = "))
+B = Fraction(input("B = "))
 
-print(f"Незанятая часть = {round(rest, 6)}")
+if not A > B > 0:
+    print("Длины должны удовлетворять условию A > B > 0")
+else:
+    # Десятичный ввод преобразуется в точную дробь.
+    rest = A
+    while rest >= B:
+        rest -= B
+
+    print(f"Незанятая часть = {float(round(rest, 6))}")

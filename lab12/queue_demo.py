@@ -130,10 +130,18 @@ def demo_queue_module():
     for item in ["a", "b", "c"]:
         q.put(item)
     print("Размер qsize():", q.qsize())
-    print("Есть ли 'b'?", "b" in q.queue)
+    # Для просмотра снимаем значения буфера под блокировкой.
+    with q.mutex:
+        contains_b = "b" in q.queue
+    print("Есть ли 'b'?", contains_b)
     print("get() ->", q.get())
-    print("Перебор:", list(q.queue))
-    q.queue.clear()
+    q.task_done()
+    with q.mutex:
+        remaining_items = list(q.queue)
+    print("Перебор:", remaining_items)
+    for _ in remaining_items:
+        q.get_nowait()
+        q.task_done()
     print("После очистки пустая?", q.empty())
 
 
