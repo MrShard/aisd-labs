@@ -2,7 +2,10 @@
 # Дан массив размера N и числа K, L (1 <= K <= L <= N).
 # Найти среднее арифметическое элементов с номерами от K до L включительно.
 
-arr = list(map(float, input("Элементы массива через пробел: ").split()))
+parts = input("Элементы массива через пробел: ").split()
+arr = []
+for part in parts:
+    arr.append(float(part))
 K = int(input("K = "))
 L = int(input("L = "))
 

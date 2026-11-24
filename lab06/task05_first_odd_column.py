@@ -7,7 +7,11 @@ N = int(input("Количество столбцов N: "))
 matrix = []
 print(f"Введите {M} строк по {N} целых чисел через пробел:")
 for i in range(M):
-    matrix.append(list(map(int, input().split())))
+    parts = input().split()
+    row = []
+    for part in parts:
+        row.append(int(part))
+    matrix.append(row)
 
 answer = 0
 for j in range(N):

@@ -11,12 +11,14 @@ yb = float(input("yB = "))
 xc = float(input("xC = "))
 yc = float(input("yC = "))
 
-dist_ab = math.sqrt((xb - xa) ** 2 + (yb - ya) ** 2)
-dist_ac = math.sqrt((xc - xa) ** 2 + (yc - ya) ** 2)
+square_ab = (xb - xa) ** 2 + (yb - ya) ** 2
+square_ac = (xc - xa) ** 2 + (yc - ya) ** 2
+dist_ab = math.sqrt(square_ab)
+dist_ac = math.sqrt(square_ac)
 
-if dist_ab < dist_ac:
+if square_ab < square_ac:
     print(f"Ближе точка B({xb}, {yb}), расстояние = {dist_ab}")
-elif dist_ac < dist_ab:
+elif square_ac < square_ab:
     print(f"Ближе точка C({xc}, {yc}), расстояние = {dist_ac}")
 else:
     print(f"Точки B и C находятся на одинаковом расстоянии = {dist_ab}")

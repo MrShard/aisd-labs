@@ -13,7 +13,10 @@ def binary_search(arr, target, left, right):
     return binary_search(arr, target, mid + 1, right)   # искомое правее
 
 
-arr = list(map(int, input("Отсортированный массив через пробел: ").split()))
+parts = input("Отсортированный массив через пробел: ").split()
+arr = []
+for part in parts:
+    arr.append(int(part))
 target = int(input("Что ищем: "))
 
 index = binary_search(arr, target, 0, len(arr) - 1)

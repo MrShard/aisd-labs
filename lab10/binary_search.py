@@ -31,7 +31,12 @@ def binary_search(arr, target, show_steps=True):
 
 if __name__ == "__main__":
     text = input("Введите отсортированные числа через пробел (Enter — пример): ")
-    numbers = list(map(int, text.split())) if text.strip() else [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+    if text.strip() == "":
+        numbers = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+    else:
+        numbers = []
+        for part in text.split():
+            numbers.append(int(part))
     numbers.sort()   # на случай, если ввели неотсортированный массив
     print(f"Массив: {numbers}")
     target = int(input("Что ищем: "))

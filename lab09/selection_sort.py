@@ -19,16 +19,29 @@ def selection_sort(arr, show_steps=True):
             if a[j] < a[min_index]:
                 min_index = j
         if min_index != i:
-            a[i], a[min_index] = a[min_index], a[i]
+            saved_value = a[i]
+            a[i] = a[min_index]
+            a[min_index] = saved_value
         if show_steps:
-            print(f"Шаг {i + 1}: минимум {a[i]} поставлен на позицию {i} -> "
-                  f"{a[:i + 1]} | {a[i + 1:]}")
+            ordered = []
+            remaining = []
+            for index in range(len(a)):
+                if index <= i:
+                    ordered.append(a[index])
+                else:
+                    remaining.append(a[index])
+            print(f"Шаг {i + 1}: минимум {a[i]} поставлен на позицию {i} -> {ordered} | {remaining}")
     return a
 
 
 if __name__ == "__main__":
     text = input("Введите числа через пробел (Enter — пример): ")
-    numbers = list(map(int, text.split())) if text.strip() else [64, 25, 12, 22, 11]
+    if text.strip() == "":
+        numbers = [64, 25, 12, 22, 11]
+    else:
+        numbers = []
+        for part in text.split():
+            numbers.append(int(part))
     print(f"Исходный массив: {numbers}")
     result = selection_sort(numbers)
     print(f"Отсортированный: {result}")

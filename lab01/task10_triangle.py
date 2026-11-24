@@ -18,8 +18,10 @@ c = math.sqrt((x1 - x3) ** 2 + (y1 - y3) ** 2)
 
 P = a + b + c
 p = P / 2
-# max(..., 0) защищает от крошечных отрицательных значений из-за погрешности вычислений
-S = math.sqrt(max(p * (p - a) * (p - b) * (p - c), 0))
+under_root = p * (p - a) * (p - b) * (p - c)
+if under_root < 0:
+    under_root = 0
+S = math.sqrt(under_root)
 
 print(f"Периметр P = {P}")
 print(f"Площадь S = {S}")

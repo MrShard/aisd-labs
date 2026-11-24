@@ -8,6 +8,6 @@ D = float(input("D = "))
 
 arr = [A]
 for i in range(1, N):
-    arr.append(arr[-1] * D)
+    arr.append(arr[i - 1] * D)
 
 print(arr)

@@ -4,7 +4,10 @@
 # Номера в задаче начинаются с 1, а индексы в Python — с 0:
 # номер 1 -> индекс 0, номер 2 -> индекс 1 и т. д.
 
-A = list(map(float, input("Элементы массива через пробел: ").split()))
+parts = input("Элементы массива через пробел: ").split()
+A = []
+for part in parts:
+    A.append(float(part))
 N = len(A)
 
 result = []
@@ -12,8 +15,9 @@ result = []
 for i in range(0, N, 2):
     result.append(A[i])
 
-# Чётные номера по убыванию: последний чётный номер = N, если N чётное, иначе N-1
-last_even_number = N if N % 2 == 0 else N - 1
+last_even_number = N
+if N % 2 != 0:
+    last_even_number = N - 1
 for number in range(last_even_number, 0, -2):
     result.append(A[number - 1])
 

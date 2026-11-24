@@ -14,7 +14,7 @@
 #   size()      — количество элементов
 #   contains(x) — есть ли элемент в очереди
 #   clear()     — очистить очередь
-#   перебор     — for item in q
+#   values()    — список элементов для перебора
 
 from collections import deque
 import queue
@@ -38,7 +38,8 @@ class MyQueue:
     def put(self, item):
         node = _QueueNode(item)
         if self.tail is None:          # очередь пуста: новый узел и начало, и конец
-            self.head = self.tail = node
+            self.head = node
+            self.tail = node
         else:
             self.tail.next = node
             self.tail = node
@@ -66,23 +67,40 @@ class MyQueue:
         return self._size
 
     def contains(self, item):
-        for value in self:
-            if value == item:
+        current = self.head
+        while current is not None:
+            if current.value == item:
                 return True
+            current = current.next
         return False
 
     def clear(self):
-        self.head = self.tail = None
+        self.head = None
+        self.tail = None
         self._size = 0
 
-    def __iter__(self):
+    def values(self):
+        result = []
         current = self.head
-        while current:
-            yield current.value
+        while current is not None:
+            result.append(current.value)
             current = current.next
+        return result
+
+    def as_text(self):
+        values = self.values()
+        text = "начало -> ["
+        for i in range(len(values)):
+            if i > 0:
+                text += ", "
+            text += str(values[i])
+        return text + "] <- конец"
+
+    def __iter__(self):
+        return iter(self.values())
 
     def __str__(self):
-        return "начало -> [" + ", ".join(str(v) for v in self) + "] <- конец"
+        return self.as_text()
 
 
 def demo_my_queue():
@@ -92,21 +110,22 @@ def demo_my_queue():
 
     for item in [1, 2, 3, 4]:
         q.put(item)
-        print(f"put({item}):", q)
+        print(f"put({item}):", q.as_text())
 
     print("Размер:", q.size())
     print("Первый элемент (peek):", q.peek())
-    print("get() ->", q.get(), "| теперь:", q)
+    first = q.get()
+    print("get() ->", first, "| теперь:", q.as_text())
     print("Есть ли 3?", q.contains(3))
     print("Есть ли 1?", q.contains(1))
 
     print("Перебор:", end=" ")
-    for item in q:
+    for item in q.values():
         print(item, end=" ")
     print()
 
     q.clear()
-    print("После clear():", q, "| пустая?", q.empty())
+    print("После clear():", q.as_text(), "| пустая?", q.empty())
 
     try:
         q.get()
@@ -133,18 +152,18 @@ def demo_queue_module():
     for item in ["a", "b", "c"]:
         q.put(item)
     print("Размер qsize():", q.qsize())
-    # Для просмотра снимаем значения буфера под блокировкой.
-    with q.mutex:
-        contains_b = "b" in q.queue
-    print("Есть ли 'b'?", contains_b)
-    print("get() ->", q.get())
+    first = q.get()
     q.task_done()
-    with q.mutex:
-        remaining_items = list(q.queue)
-    print("Перебор:", remaining_items)
-    for _ in remaining_items:
-        q.get_nowait()
+
+    remaining_items = []
+    while not q.empty():
+        item = q.get()
+        remaining_items.append(item)
         q.task_done()
+
+    print("Есть ли 'b'?", first == "b" or "b" in remaining_items)
+    print("get() ->", first)
+    print("Перебор:", remaining_items)
     print("После очистки пустая?", q.empty())
 
 
@@ -154,7 +173,7 @@ def simulate_cashier():
     line = MyQueue()
     for name in ["Анна", "Борис", "Вера"]:
         line.put(name)
-        print(f"{name} встал(а) в очередь. Очередь: {line}")
+        print(f"{name} встал(а) в очередь. Очередь: {line.as_text()}")
     while not line.empty():
         print(f"Обслужен(а): {line.get()}. Осталось: {line.size()}")
 

@@ -22,7 +22,9 @@ def bubble_sort(arr, show_steps=True):
         # после pass_number проходов последние pass_number элементов уже на местах
         for i in range(n - 1 - pass_number):
             if a[i] > a[i + 1]:
-                a[i], a[i + 1] = a[i + 1], a[i]
+                saved_value = a[i]
+                a[i] = a[i + 1]
+                a[i + 1] = saved_value
                 swapped = True
         if show_steps:
             print(f"Проход {pass_number + 1}: {a}")
@@ -33,7 +35,12 @@ def bubble_sort(arr, show_steps=True):
 
 if __name__ == "__main__":
     text = input("Введите числа через пробел (Enter — пример): ")
-    numbers = list(map(int, text.split())) if text.strip() else [5, 1, 4, 2, 8, 3]
+    if text.strip() == "":
+        numbers = [5, 1, 4, 2, 8, 3]
+    else:
+        numbers = []
+        for part in text.split():
+            numbers.append(int(part))
     print(f"Исходный массив: {numbers}")
     result = bubble_sort(numbers)
     print(f"Отсортированный: {result}")

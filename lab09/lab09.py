@@ -22,46 +22,54 @@ def selection_sort(arr, show_steps=True):
             if a[j] < a[min_index]:
                 min_index = j
         if min_index != i:
-            a[i], a[min_index] = a[min_index], a[i]
+            saved_value = a[i]
+            a[i] = a[min_index]
+            a[min_index] = saved_value
         if show_steps:
-            print(f"Шаг {i + 1}: минимум {a[i]} поставлен на позицию {i} -> "
-                  f"{a[:i + 1]} | {a[i + 1:]}")
+            ordered = []
+            remaining = []
+            for index in range(len(a)):
+                if index <= i:
+                    ordered.append(a[index])
+                else:
+                    remaining.append(a[index])
+            print(f"Шаг {i + 1}: минимум {a[i]} поставлен на позицию {i} -> {ordered} | {remaining}")
     return a
 
 
-def run_task(read_input):
-    text = read_input("Введите числа через пробел (Enter — пример): ")
-    numbers = list(map(int, text.split())) if text.strip() else [64, 25, 12, 22, 11]
+# В ручном режиме читаю строку с клавиатуры. В примере беру первую готовую строку.
+def read_line(prompt, example_lines):
+    if example_lines is None:
+        return input(prompt)
+
+    # pop(0) возвращает первую строку и убирает её из списка этого запуска.
+    line = example_lines.pop(0)
+    print(prompt + line)
+    return line
+
+
+def run_task(example_lines=None):
+    text = read_line("Введите числа через пробел (Enter — пример): ", example_lines)
+    if text.strip() == "":
+        numbers = [64, 25, 12, 22, 11]
+    else:
+        numbers = []
+        for part in text.split():
+            numbers.append(int(part))
     print(f"Исходный массив: {numbers}")
     result = selection_sort(numbers)
     print(f"Отсортированный: {result}")
 
 
-def run_example(solve, example_inputs):
-    """Передаёт задаче готовые данные и показывает их в консоли."""
-    values = iter(example_inputs)
-
-    def read_example(prompt=""):
-        value = next(values)
-        print(f"{prompt}{value}")
-        return value
-
-    solve(read_example)
-
-
-def run_selected(solve, example_inputs):
-    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
-    if not mode:
-        run_example(solve, example_inputs)
-    elif mode == "1":
-        solve(input)
-    else:
-        print("Для примера нажмите Enter, для ручного ввода введите 1.")
-
-
 def main():
     print('Лабораторная работа № 9 «Сортировка выбором»')
-    run_selected(run_task, ('64 25 12 22 11',))
+    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
+    if mode == "":
+        run_task(['64 25 12 22 11'])
+    elif mode == "1":
+        run_task()
+    else:
+        print("Для примера нажмите Enter, для ручного ввода введите 1.")
 
 
 if __name__ == "__main__":

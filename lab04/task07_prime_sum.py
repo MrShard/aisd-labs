@@ -34,4 +34,9 @@ result = decompose(n)
 if result is None:
     print("Число нельзя разложить на сумму простых")
 else:
-    print(f"{n} = " + " + ".join(str(p) for p in result))
+    text = f"{n} = "
+    for i in range(len(result)):
+        if i > 0:
+            text += " + "
+        text += str(result[i])
+    print(text)

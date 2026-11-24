@@ -9,7 +9,6 @@
 #   - обратный (post-order):  левое -> правое -> узел
 # Обход в ширину (level-order): по уровням сверху вниз, слева направо, с помощью очереди.
 
-from collections import deque
 
 
 class Node:
@@ -66,18 +65,20 @@ def postorder(root, result):
 
 
 def level_order(root):
-    """Обход в ширину: берём узел из начала очереди, его детей кладём в конец."""
+    """Обход в ширину по списку ожидающих узлов."""
     result = []
     if root is None:
         return result
-    queue = deque([root])
-    while queue:
-        node = queue.popleft()
+    pending = [root]
+    index = 0
+    while index < len(pending):
+        node = pending[index]
+        index += 1
         result.append(node.value)
         if node.left:
-            queue.append(node.left)
+            pending.append(node.left)
         if node.right:
-            queue.append(node.right)
+            pending.append(node.right)
     return result
 
 
@@ -85,15 +86,33 @@ def print_tree(node, prefix="", is_left=None):
     """Печать дерева «боком»: правое поддерево сверху, левое снизу."""
     if node is None:
         return
-    print_tree(node.right, prefix + ("│   " if is_left else "    "), False)
-    connector = "" if is_left is None else ("└── " if is_left else "┌── ")
+    right_prefix = prefix + "    "
+    if is_left:
+        right_prefix = prefix + "│   "
+    print_tree(node.right, right_prefix, False)
+
+    connector = ""
+    if is_left is not None:
+        if is_left:
+            connector = "└── "
+        else:
+            connector = "┌── "
     print(prefix + connector + str(node.value))
-    print_tree(node.left, prefix + ("    " if is_left or is_left is None else "│   "), True)
+
+    left_prefix = prefix + "    "
+    if is_left is not None and not is_left:
+        left_prefix = prefix + "│   "
+    print_tree(node.left, left_prefix, True)
 
 
 if __name__ == "__main__":
     text = input("Введите числа для дерева через пробел (Enter — пример): ")
-    values = list(map(int, text.split())) if text.strip() else [50, 30, 20, 40, 70, 60, 80]
+    if text.strip() == "":
+        values = [50, 30, 20, 40, 70, 60, 80]
+    else:
+        values = []
+        for part in text.split():
+            values.append(int(part))
 
     tree = None
     for v in values:
@@ -108,4 +127,8 @@ if __name__ == "__main__":
     print("Обход в ширину (level-order):   ", level_order(tree))
 
     target = int(input("\nКакое значение найти? "))
-    print("Элемент найден" if search(tree, target) else "Элемент не найден")
+    found_node = search(tree, target)
+    if found_node is None:
+        print("Элемент не найден")
+    else:
+        print("Элемент найден")

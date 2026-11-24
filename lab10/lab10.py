@@ -32,12 +32,28 @@ def binary_search(arr, target, show_steps=True):
     return -1
 
 
-def run_task(read_input):
-    text = read_input("Введите отсортированные числа через пробел (Enter — пример): ")
-    numbers = list(map(int, text.split())) if text.strip() else [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+# В ручном режиме читаю строку с клавиатуры. В примере беру первую готовую строку.
+def read_line(prompt, example_lines):
+    if example_lines is None:
+        return input(prompt)
+
+    # pop(0) возвращает первую строку и убирает её из списка этого запуска.
+    line = example_lines.pop(0)
+    print(prompt + line)
+    return line
+
+
+def run_task(example_lines=None):
+    text = read_line("Введите отсортированные числа через пробел (Enter — пример): ", example_lines)
+    if text.strip() == "":
+        numbers = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+    else:
+        numbers = []
+        for part in text.split():
+            numbers.append(int(part))
     numbers.sort()   # на случай, если ввели неотсортированный массив
     print(f"Массив: {numbers}")
-    target = int(read_input("Что ищем: "))
+    target = int(read_line("Что ищем: ", example_lines))
 
     index = binary_search(numbers, target)
     if index == -1:
@@ -46,31 +62,15 @@ def run_task(read_input):
         print(f"Элемент {target} найден по индексу {index}")
 
 
-def run_example(solve, example_inputs):
-    """Передаёт задаче готовые данные и показывает их в консоли."""
-    values = iter(example_inputs)
-
-    def read_example(prompt=""):
-        value = next(values)
-        print(f"{prompt}{value}")
-        return value
-
-    solve(read_example)
-
-
-def run_selected(solve, example_inputs):
-    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
-    if not mode:
-        run_example(solve, example_inputs)
-    elif mode == "1":
-        solve(input)
-    else:
-        print("Для примера нажмите Enter, для ручного ввода введите 1.")
-
-
 def main():
     print('Лабораторная работа № 10 «Итеративный бинарный поиск»')
-    run_selected(run_task, ('2 5 8 12 16 23 38 56 72 91', '23'))
+    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
+    if mode == "":
+        run_task(['2 5 8 12 16 23 38 56 72 91', '23'])
+    elif mode == "1":
+        run_task()
+    else:
+        print("Для примера нажмите Enter, для ручного ввода введите 1.")
 
 
 if __name__ == "__main__":

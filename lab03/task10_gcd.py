@@ -5,8 +5,11 @@
 A = int(input("A = "))
 B = int(input("B = "))
 
-a, b = A, B
+a = A
+b = B
 while b != 0:
-    a, b = b, a % b
+    remainder = a % b
+    a = b
+    b = remainder
 
 print(f"НОД({A}, {B}) = {a}")

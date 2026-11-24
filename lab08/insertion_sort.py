@@ -21,13 +21,25 @@ def insertion_sort(arr, show_steps=True):
             j -= 1
         a[j + 1] = key          # вставляем на найденную позицию
         if show_steps:
-            print(f"Шаг {i}: вставили {key} -> {a[:i + 1]} | {a[i + 1:]}")
+            ordered = []
+            remaining = []
+            for index in range(len(a)):
+                if index <= i:
+                    ordered.append(a[index])
+                else:
+                    remaining.append(a[index])
+            print(f"Шаг {i}: вставили {key} -> {ordered} | {remaining}")
     return a
 
 
 if __name__ == "__main__":
     text = input("Введите числа через пробел (Enter — пример): ")
-    numbers = list(map(int, text.split())) if text.strip() else [12, 11, 13, 5, 6]
+    if text.strip() == "":
+        numbers = [12, 11, 13, 5, 6]
+    else:
+        numbers = []
+        for part in text.split():
+            numbers.append(int(part))
     print(f"Исходный массив: {numbers}")
     print("(слева от | — отсортированная часть, справа — ещё не обработанная)")
     result = insertion_sort(numbers)

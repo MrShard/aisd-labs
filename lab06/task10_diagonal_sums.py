@@ -8,7 +8,11 @@ M = int(input("Порядок матрицы M: "))
 A = []
 print(f"Введите {M} строк по {M} чисел через пробел:")
 for i in range(M):
-    A.append(list(map(float, input().split())))
+    parts = input().split()
+    row = []
+    for part in parts:
+        row.append(float(part))
+    A.append(row)
 
 for d in range(-(M - 1), M):
     total = 0
@@ -16,5 +20,7 @@ for d in range(-(M - 1), M):
         j = i + d
         if 0 <= j < M:
             total += A[i][j]
-    note = " (главная)" if d == 0 else ""
+    note = ""
+    if d == 0:
+        note = " (главная)"
     print(f"Диагональ j - i = {d}{note}: сумма = {total}")

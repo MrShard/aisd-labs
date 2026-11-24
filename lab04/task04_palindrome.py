@@ -12,9 +12,10 @@ def is_palindrome(s):
 
 
 text = input("Введите строку: ")
-# Убираем пробелы и знаки препинания, приводим к нижнему регистру,
-# чтобы «А роза упала на лапу Азора» тоже считалась палиндромом
-cleaned = "".join(ch.lower() for ch in text if ch.isalnum())
+cleaned = ""
+for character in text:
+    if character.isalnum():
+        cleaned += character.lower()
 
 if is_palindrome(cleaned):
     print("Это палиндром")

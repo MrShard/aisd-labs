@@ -27,4 +27,7 @@ else:
         if rest % 10 > 0:
             parts.append(units[rest % 10])
 
-    print(f"{n} — «{' '.join(parts)}»")
+    number_text = parts[0]
+    for i in range(1, len(parts)):
+        number_text += " " + parts[i]
+    print(f"{n} — «{number_text}»")

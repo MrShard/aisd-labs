@@ -12,7 +12,6 @@
 #   - обратный (post-order):  левое -> правое -> узел
 # Обход в ширину (level-order): по уровням сверху вниз, слева направо, с помощью очереди.
 
-from collections import deque
 
 
 class Node:
@@ -69,18 +68,20 @@ def postorder(root, result):
 
 
 def level_order(root):
-    """Обход в ширину: берём узел из начала очереди, его детей кладём в конец."""
+    """Обход в ширину по списку ожидающих узлов."""
     result = []
     if root is None:
         return result
-    queue = deque([root])
-    while queue:
-        node = queue.popleft()
+    pending = [root]
+    index = 0
+    while index < len(pending):
+        node = pending[index]
+        index += 1
         result.append(node.value)
         if node.left:
-            queue.append(node.left)
+            pending.append(node.left)
         if node.right:
-            queue.append(node.right)
+            pending.append(node.right)
     return result
 
 
@@ -88,15 +89,44 @@ def print_tree(node, prefix="", is_left=None):
     """Печать дерева «боком»: правое поддерево сверху, левое снизу."""
     if node is None:
         return
-    print_tree(node.right, prefix + ("│   " if is_left else "    "), False)
-    connector = "" if is_left is None else ("└── " if is_left else "┌── ")
+    right_prefix = prefix + "    "
+    if is_left:
+        right_prefix = prefix + "│   "
+    print_tree(node.right, right_prefix, False)
+
+    connector = ""
+    if is_left is not None:
+        if is_left:
+            connector = "└── "
+        else:
+            connector = "┌── "
     print(prefix + connector + str(node.value))
-    print_tree(node.left, prefix + ("    " if is_left or is_left is None else "│   "), True)
+
+    left_prefix = prefix + "    "
+    if is_left is not None and not is_left:
+        left_prefix = prefix + "│   "
+    print_tree(node.left, left_prefix, True)
 
 
-def run_task(read_input):
-    text = read_input("Введите числа для дерева через пробел (Enter — пример): ")
-    values = list(map(int, text.split())) if text.strip() else [50, 30, 20, 40, 70, 60, 80]
+# В ручном режиме читаю строку с клавиатуры. В примере беру первую готовую строку.
+def read_line(prompt, example_lines):
+    if example_lines is None:
+        return input(prompt)
+
+    # pop(0) возвращает первую строку и убирает её из списка этого запуска.
+    line = example_lines.pop(0)
+    print(prompt + line)
+    return line
+
+
+def run_task(example_lines=None):
+    text = read_line("Введите числа для дерева через пробел (Enter — пример): ", example_lines)
+    if text.strip() == "":
+        values = [50, 30, 20, 40, 70, 60, 80]
+    else:
+        values = []
+        for part in text.split():
+            values.append(int(part))
 
     tree = None
     for v in values:
@@ -110,35 +140,23 @@ def run_task(read_input):
     print("Обратный обход (post-order):    ", postorder(tree, []))
     print("Обход в ширину (level-order):   ", level_order(tree))
 
-    target = int(read_input("\nКакое значение найти? "))
-    print("Элемент найден" if search(tree, target) else "Элемент не найден")
-
-
-def run_example(solve, example_inputs):
-    """Передаёт задаче готовые данные и показывает их в консоли."""
-    values = iter(example_inputs)
-
-    def read_example(prompt=""):
-        value = next(values)
-        print(f"{prompt}{value}")
-        return value
-
-    solve(read_example)
-
-
-def run_selected(solve, example_inputs):
-    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
-    if not mode:
-        run_example(solve, example_inputs)
-    elif mode == "1":
-        solve(input)
+    target = int(read_line("\nКакое значение найти? ", example_lines))
+    found_node = search(tree, target)
+    if found_node is None:
+        print("Элемент не найден")
     else:
-        print("Для примера нажмите Enter, для ручного ввода введите 1.")
+        print("Элемент найден")
 
 
 def main():
     print('Лабораторная работа № 11 «Бинарное дерево поиска»')
-    run_selected(run_task, ('50 30 20 40 70 60 80', '60'))
+    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
+    if mode == "":
+        run_task(['50 30 20 40 70 60 80', '60'])
+    elif mode == "1":
+        run_task()
+    else:
+        print("Для примера нажмите Enter, для ручного ввода введите 1.")
 
 
 if __name__ == "__main__":

@@ -2,7 +2,10 @@
 # Дан массив A размера N. Вывести элементы в порядке: A1, AN, A2, AN-1, A3, AN-2, ...
 # Используем два указателя: left идёт с начала, right — с конца.
 
-A = list(map(float, input("Элементы массива через пробел: ").split()))
+parts = input("Элементы массива через пробел: ").split()
+A = []
+for part in parts:
+    A.append(float(part))
 
 result = []
 left = 0

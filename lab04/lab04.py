@@ -1,7 +1,18 @@
 """Лабораторная работа № 4 «Рекурсия». Объединённый запуск."""
 
 
-def task01_factorial(read_input):
+# В ручном режиме читаю строку с клавиатуры. В примере беру первую готовую строку.
+def read_line(prompt, example_lines):
+    if example_lines is None:
+        return input(prompt)
+
+    # pop(0) возвращает первую строку и убирает её из списка этого запуска.
+    line = example_lines.pop(0)
+    print(prompt + line)
+    return line
+
+
+def task01_factorial(example_lines=None):
     # Лабораторная 4, задача 1
     # Рекурсивно вычислить факториал n: n! = n * (n-1)!, 0! = 1.
 
@@ -11,14 +22,14 @@ def task01_factorial(read_input):
         return n * factorial(n - 1)
 
 
-    n = int(read_input("n = "))
+    n = int(read_line("n = ", example_lines))
     if n < 0:
         print("Факториал отрицательного числа не определён")
     else:
         print(f"{n}! = {factorial(n)}")
 
 
-def task02_fibonacci(read_input):
+def task02_fibonacci(example_lines=None):
     # Лабораторная 4, задача 2
     # Рекурсивно вычислить n-е число Фибоначчи: F(0)=0, F(1)=1, F(n)=F(n-1)+F(n-2).
     # Внимание: простая рекурсия работает медленно для n > 35 (много повторных вызовов).
@@ -29,14 +40,14 @@ def task02_fibonacci(read_input):
         return fibonacci(n - 1) + fibonacci(n - 2)
 
 
-    n = int(read_input("n = "))
+    n = int(read_line("n = ", example_lines))
     if n < 0:
         print("n должно быть неотрицательным")
     else:
         print(f"F({n}) = {fibonacci(n)}")
 
 
-def task03_power(read_input):
+def task03_power(example_lines=None):
     # Лабораторная 4, задача 3
     # Рекурсивно возвести x в целую степень n.
     #   x^0 = 1
@@ -51,8 +62,8 @@ def task03_power(read_input):
         return x * power(x, n - 1)
 
 
-    x = float(read_input("x = "))
-    n = int(read_input("n (целое) = "))
+    x = float(read_line("x = ", example_lines))
+    n = int(read_line("n (целое) = ", example_lines))
 
     if x == 0 and n < 0:
         print("0 нельзя возводить в отрицательную степень")
@@ -60,7 +71,7 @@ def task03_power(read_input):
         print(f"{x}^{n} = {power(x, n)}")
 
 
-def task04_palindrome(read_input):
+def task04_palindrome(example_lines=None):
     # Лабораторная 4, задача 4
     # Рекурсивно проверить, является ли строка палиндромом.
     # Идея: строка — палиндром, если первый и последний символы равны
@@ -74,10 +85,11 @@ def task04_palindrome(read_input):
         return is_palindrome(s[1:-1])
 
 
-    text = read_input("Введите строку: ")
-    # Убираем пробелы и знаки препинания, приводим к нижнему регистру,
-    # чтобы «А роза упала на лапу Азора» тоже считалась палиндромом
-    cleaned = "".join(ch.lower() for ch in text if ch.isalnum())
+    text = read_line("Введите строку: ", example_lines)
+    cleaned = ""
+    for character in text:
+        if character.isalnum():
+            cleaned += character.lower()
 
     if is_palindrome(cleaned):
         print("Это палиндром")
@@ -85,7 +97,7 @@ def task04_palindrome(read_input):
         print("Это не палиндром")
 
 
-def task05_binary_search(read_input):
+def task05_binary_search(example_lines=None):
     # Лабораторная 4, задача 5
     # Рекурсивный бинарный поиск элемента в отсортированном массиве.
     # Возвращает индекс элемента или -1, если его нет.
@@ -101,8 +113,11 @@ def task05_binary_search(read_input):
         return binary_search(arr, target, mid + 1, right)   # искомое правее
 
 
-    arr = list(map(int, read_input("Отсортированный массив через пробел: ").split()))
-    target = int(read_input("Что ищем: "))
+    parts = read_line("Отсортированный массив через пробел: ", example_lines).split()
+    arr = []
+    for part in parts:
+        arr.append(int(part))
+    target = int(read_line("Что ищем: ", example_lines))
 
     index = binary_search(arr, target, 0, len(arr) - 1)
     if index == -1:
@@ -111,7 +126,7 @@ def task05_binary_search(read_input):
         print(f"Элемент найден, индекс = {index} (номер {index + 1})")
 
 
-def task06_reverse_words(read_input):
+def task06_reverse_words(example_lines=None):
     # Лабораторная 4, задача 6
     # Рекурсивно поменять порядок слов в строке на обратный.
     # Идея: reverse(["a", "b", "c"]) = reverse(["b", "c"]) + ["a"]
@@ -122,12 +137,12 @@ def task06_reverse_words(read_input):
         return reverse_words(words[1:]) + [words[0]]
 
 
-    text = read_input("Введите строку: ")
+    text = read_line("Введите строку: ", example_lines)
     words = text.split()
     print(" ".join(reverse_words(words)))
 
 
-def task07_prime_sum(read_input):
+def task07_prime_sum(example_lines=None):
     # Лабораторная 4, задача 7
     # Рекурсивно разложить число на сумму простых чисел.
     # Идея: берём наибольшее простое p <= n, такое что остаток n - p можно разложить
@@ -158,16 +173,21 @@ def task07_prime_sum(read_input):
         return None
 
 
-    n = int(read_input("Введите число (>= 2): "))
+    n = int(read_line("Введите число (>= 2): ", example_lines))
     result = decompose(n)
 
     if result is None:
         print("Число нельзя разложить на сумму простых")
     else:
-        print(f"{n} = " + " + ".join(str(p) for p in result))
+        text = f"{n} = "
+        for i in range(len(result)):
+            if i > 0:
+                text += " + "
+            text += str(result[i])
+        print(text)
 
 
-def task08_count_digits(read_input):
+def task08_count_digits(example_lines=None):
     # Лабораторная 4, задача 8
     # Рекурсивно подсчитать количество цифр в числе.
     # Идея: если число < 10, в нём одна цифра; иначе 1 + количество цифр в n // 10.
@@ -178,11 +198,11 @@ def task08_count_digits(read_input):
         return 1 + count_digits(n // 10)
 
 
-    n = int(read_input("Введите целое число: "))
+    n = int(read_line("Введите целое число: ", example_lines))
     print(f"Количество цифр: {count_digits(abs(n))}")
 
 
-def task09_hanoi(read_input):
+def task09_hanoi(example_lines=None):
     # Лабораторная 4, задача 9
     # Рекурсивное решение головоломки «Ханойская башня».
     # Чтобы перенести n дисков со стержня source на target:
@@ -191,81 +211,105 @@ def task09_hanoi(read_input):
     #   3) перенести n-1 дисков с helper на target.
     # Всего ходов: 2^n - 1.
 
-    moves = 0
-
-
-    def hanoi(n, source, target, helper):
-        nonlocal moves
+    def hanoi(n, source, target, helper, moves=0):
         if n == 0:
-            return
-        hanoi(n - 1, source, helper, target)
+            return moves
+
+        moves = hanoi(n - 1, source, helper, target, moves)
+
         moves += 1
         print(f"Ход {moves}: диск {n} со стержня {source} на стержень {target}")
-        hanoi(n - 1, helper, target, source)
+
+        return hanoi(n - 1, helper, target, source, moves)
 
 
-    n = int(read_input("Количество дисков: "))
-    hanoi(n, "A", "C", "B")
+    n = int(read_line("Количество дисков: ", example_lines))
+    moves = hanoi(n, "A", "C", "B")
     print(f"Всего ходов: {moves}")
 
 
-def run_example(solve, example_inputs):
-    """Передаёт задаче готовые данные и показывает их в консоли."""
-    values = iter(example_inputs)
+TITLES = [
+    'Факториал',
+    'Число Фибоначчи',
+    'Целая степень',
+    'Палиндром',
+    'Бинарный поиск',
+    'Слова в обратном порядке',
+    'Сумма простых чисел',
+    'Количество цифр',
+    'Ханойская башня',
+]
 
-    def read_example(prompt=""):
-        value = next(values)
-        print(f"{prompt}{value}")
-        return value
-
-    solve(read_example)
-
-
-def run_selected(solve, example_inputs):
-    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
-    if not mode:
-        run_example(solve, example_inputs)
-    elif mode == "1":
-        solve(input)
-    else:
-        print("Для примера нажмите Enter, для ручного ввода введите 1.")
+EXAMPLES = [
+    ['5'],
+    ['8'],
+    ['2', '-3'],
+    ['А роза упала на лапу Азора'],
+    ['1 3 5 7 9', '9'],
+    ['я люблю код'],
+    ['27'],
+    ['-12304'],
+    ['2'],
+]
 
 
-TASKS = {
-    '1': ('Факториал', task01_factorial, ('5',)),
-    '2': ('Число Фибоначчи', task02_fibonacci, ('8',)),
-    '3': ('Целая степень', task03_power, ('2', '-3')),
-    '4': ('Палиндром', task04_palindrome, ('А роза упала на лапу Азора',)),
-    '5': ('Бинарный поиск', task05_binary_search, ('1 3 5 7 9', '9')),
-    '6': ('Слова в обратном порядке', task06_reverse_words, ('я люблю код',)),
-    '7': ('Сумма простых чисел', task07_prime_sum, ('27',)),
-    '8': ('Количество цифр', task08_count_digits, ('-12304',)),
-    '9': ('Ханойская башня', task09_hanoi, ('2',)),
-}
+# Подготавливаю входные данные и обычным if выбираю нужную задачу.
+def run_task(number, use_example):
+    example_lines = None
+    if use_example:
+        # Копирую пример, потому что read_line забирает использованные строки.
+        example_lines = EXAMPLES[number - 1].copy()
+    if number == 1:
+        task01_factorial(example_lines)
+    elif number == 2:
+        task02_fibonacci(example_lines)
+    elif number == 3:
+        task03_power(example_lines)
+    elif number == 4:
+        task04_palindrome(example_lines)
+    elif number == 5:
+        task05_binary_search(example_lines)
+    elif number == 6:
+        task06_reverse_words(example_lines)
+    elif number == 7:
+        task07_prime_sum(example_lines)
+    elif number == 8:
+        task08_count_digits(example_lines)
+    elif number == 9:
+        task09_hanoi(example_lines)
 
 
 def main():
     print('Лабораторная работа № 4 «Рекурсия»')
-    for number, (title, _, _) in TASKS.items():
-        print(f"{number}. {title}")
+    for index in range(len(TITLES)):
+        print(f"{index + 1}. {TITLES[index]}")
 
     choice = input("Номер задачи или Enter / 0 — все примеры: ").strip()
-    if choice in ("", "0"):
-        for number, (title, solve, example_inputs) in TASKS.items():
-            print(f"\n=== Задача {number}. {title} ===")
-            run_example(solve, example_inputs)
-        print(f"\nВыполнено примеров: {len(TASKS)}")
+    if choice == "" or choice == "0":
+        # Общий прогон подставляет пример для каждой задачи по очереди.
+        for number in range(1, len(TITLES) + 1):
+            print(f"\n=== Задача {number}. {TITLES[number - 1]} ===")
+            run_task(number, True)
+        print(f"\nВыполнено примеров: {len(TITLES)}")
         return
 
-    number = choice.lstrip("0")
-    task = TASKS.get(number)
-    if task is None:
+    choice = choice.lstrip("0")
+    if not choice.isdecimal() or len(choice) > 2:
+        print("Нет задачи с таким номером.")
+        return
+    number = int(choice)
+    if number < 1 or number > len(TITLES):
         print("Нет задачи с таким номером.")
         return
 
-    title, solve, example_inputs = task
-    print(f"\n=== Задача {number}. {title} ===")
-    run_selected(solve, example_inputs)
+    print(f"\n=== Задача {number}. {TITLES[number - 1]} ===")
+    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
+    if mode == "":
+        run_task(number, True)
+    elif mode == "1":
+        run_task(number, False)
+    else:
+        print("Для примера нажмите Enter, для ручного ввода введите 1.")
 
 
 if __name__ == "__main__":

@@ -2,7 +2,10 @@
 # Дан целочисленный массив без одинаковых чисел. Проверить, образуют ли элементы
 # арифметическую прогрессию. Если да — вывести разность, иначе 0.
 
-arr = list(map(int, input("Элементы массива через пробел: ").split()))
+parts = input("Элементы массива через пробел: ").split()
+arr = []
+for part in parts:
+    arr.append(int(part))
 
 if len(arr) < 2:
     print(0)
@@ -14,4 +17,7 @@ else:
             is_progression = False
             break
 
-    print(d if is_progression else 0)
+    if is_progression:
+        print(d)
+    else:
+        print(0)

@@ -8,10 +8,17 @@ M = int(input("Порядок матрицы M (нечётное): "))
 A = []
 print(f"Введите {M} строк по {M} чисел через пробел:")
 for i in range(M):
-    A.append(list(map(int, input().split())))
+    parts = input().split()
+    row = []
+    for part in parts:
+        row.append(int(part))
+    A.append(row)
 
 result = []
-top, bottom, left, right = 0, M - 1, 0, M - 1   # границы текущего витка
+top = 0
+bottom = M - 1
+left = 0
+right = M - 1
 
 while top <= bottom:
     if top == bottom:                    # остался центральный элемент
@@ -31,4 +38,8 @@ while top <= bottom:
     left += 1
     right -= 1
 
-print(*result)
+for i in range(len(result)):
+    if i > 0:
+        print(" ", end="")
+    print(result[i], end="")
+print()

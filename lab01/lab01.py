@@ -1,12 +1,23 @@
 """Лабораторная работа № 1 «Линейные алгоритмы». Объединённый запуск."""
 
 
-def task01_rectangle(read_input):
+# В ручном режиме читаю строку с клавиатуры. В примере беру первую готовую строку.
+def read_line(prompt, example_lines):
+    if example_lines is None:
+        return input(prompt)
+
+    # pop(0) возвращает первую строку и убирает её из списка этого запуска.
+    line = example_lines.pop(0)
+    print(prompt + line)
+    return line
+
+
+def task01_rectangle(example_lines=None):
     # Лабораторная 1, задача 1
     # Даны стороны прямоугольника a и b. Найти площадь S = a*b и периметр P = 2*(a + b).
 
-    a = float(read_input("Введите сторону a: "))
-    b = float(read_input("Введите сторону b: "))
+    a = float(read_line("Введите сторону a: ", example_lines))
+    b = float(read_line("Введите сторону b: ", example_lines))
 
     S = a * b
     P = 2 * (a + b)
@@ -15,36 +26,36 @@ def task01_rectangle(read_input):
     print(f"Периметр P = {P}")
 
 
-def task02_circle_length(read_input):
+def task02_circle_length(example_lines=None):
     # Лабораторная 1, задача 2
     # Дан диаметр окружности d. Найти её длину L = π*d (π = 3.14).
 
     PI = 3.14
 
-    d = float(read_input("Введите диаметр d: "))
+    d = float(read_line("Введите диаметр d: ", example_lines))
     L = PI * d
 
     print(f"Длина окружности L = {round(L, 4)}")
 
 
-def task03_average(read_input):
+def task03_average(example_lines=None):
     # Лабораторная 1, задача 3
     # Даны два числа a и b. Найти их среднее арифметическое (a + b) / 2.
 
-    a = float(read_input("Введите a: "))
-    b = float(read_input("Введите b: "))
+    a = float(read_line("Введите a: ", example_lines))
+    b = float(read_line("Введите b: ", example_lines))
 
     average = (a + b) / 2
 
     print(f"Среднее арифметическое = {average}")
 
 
-def task04_squares(read_input):
+def task04_squares(example_lines=None):
     # Лабораторная 1, задача 4
     # Даны два ненулевых числа. Найти сумму, разность, произведение и частное их квадратов.
 
-    a = float(read_input("Введите первое ненулевое число: "))
-    b = float(read_input("Введите второе ненулевое число: "))
+    a = float(read_line("Введите первое ненулевое число: ", example_lines))
+    b = float(read_line("Введите второе ненулевое число: ", example_lines))
 
     a2 = a ** 2
     b2 = b ** 2
@@ -56,12 +67,12 @@ def task04_squares(read_input):
     print(f"Частное = {a2 / b2}")
 
 
-def task05_abs(read_input):
+def task05_abs(example_lines=None):
     # Лабораторная 1, задача 5
     # Даны два ненулевых числа. Найти сумму, разность, произведение и частное их модулей.
 
-    a = float(read_input("Введите первое ненулевое число: "))
-    b = float(read_input("Введите второе ненулевое число: "))
+    a = float(read_line("Введите первое ненулевое число: ", example_lines))
+    b = float(read_line("Введите второе ненулевое число: ", example_lines))
 
     abs_a = abs(a)
     abs_b = abs(b)
@@ -73,31 +84,33 @@ def task05_abs(read_input):
     print(f"Частное = {abs_a / abs_b}")
 
 
-def task06_distance(read_input):
+def task06_distance(example_lines=None):
     # Лабораторная 1, задача 6
     # Найти расстояние между двумя точками (x1, y1) и (x2, y2).
     # Формула: d = sqrt((x2 - x1)^2 + (y2 - y1)^2)
 
     import math
 
-    x1 = float(read_input("x1 = "))
-    y1 = float(read_input("y1 = "))
-    x2 = float(read_input("x2 = "))
-    y2 = float(read_input("y2 = "))
+    x1 = float(read_line("x1 = ", example_lines))
+    y1 = float(read_line("y1 = ", example_lines))
+    x2 = float(read_line("x2 = ", example_lines))
+    y2 = float(read_line("y2 = ", example_lines))
 
-    distance = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+    dx = x2 - x1
+    dy = y2 - y1
+    distance = math.sqrt(dx ** 2 + dy ** 2)
 
     print(f"Расстояние между точками = {distance}")
 
 
-def task07_segments_sum(read_input):
+def task07_segments_sum(example_lines=None):
     # Лабораторная 1, задача 7
     # Даны три точки A, B, C на числовой оси. Найти длины отрезков AC и BC и их сумму.
     # Длина отрезка на оси = модуль разности координат.
 
-    A = float(read_input("Координата точки A: "))
-    B = float(read_input("Координата точки B: "))
-    C = float(read_input("Координата точки C: "))
+    A = float(read_line("Координата точки A: ", example_lines))
+    B = float(read_line("Координата точки B: ", example_lines))
+    C = float(read_line("Координата точки C: ", example_lines))
 
     AC = abs(A - C)
     BC = abs(B - C)
@@ -107,14 +120,14 @@ def task07_segments_sum(read_input):
     print(f"AC + BC = {AC + BC}")
 
 
-def task08_segments_product(read_input):
+def task08_segments_product(example_lines=None):
     # Лабораторная 1, задача 8
     # Даны три точки A, B, C на числовой оси, C лежит между A и B.
     # Найти произведение длин отрезков AC и BC.
 
-    A = float(read_input("Координата точки A: "))
-    B = float(read_input("Координата точки B: "))
-    C = float(read_input("Координата точки C (между A и B): "))
+    A = float(read_line("Координата точки A: ", example_lines))
+    B = float(read_line("Координата точки B: ", example_lines))
+    C = float(read_line("Координата точки C (между A и B): ", example_lines))
 
     AC = abs(A - C)
     BC = abs(B - C)
@@ -123,15 +136,15 @@ def task08_segments_product(read_input):
     print(f"AC * BC = {AC * BC}")
 
 
-def task09_rectangle_by_vertices(read_input):
+def task09_rectangle_by_vertices(example_lines=None):
     # Лабораторная 1, задача 9
     # Даны координаты двух противоположных вершин прямоугольника (x1, y1), (x2, y2).
     # Стороны параллельны осям. Найти периметр и площадь.
 
-    x1 = float(read_input("x1 = "))
-    y1 = float(read_input("y1 = "))
-    x2 = float(read_input("x2 = "))
-    y2 = float(read_input("y2 = "))
+    x1 = float(read_line("x1 = ", example_lines))
+    y1 = float(read_line("y1 = ", example_lines))
+    x2 = float(read_line("x2 = ", example_lines))
+    y2 = float(read_line("y2 = ", example_lines))
 
     width = abs(x2 - x1)   # длина горизонтальной стороны
     height = abs(y2 - y1)  # длина вертикальной стороны
@@ -143,7 +156,7 @@ def task09_rectangle_by_vertices(read_input):
     print(f"Площадь S = {S}")
 
 
-def task10_triangle(read_input):
+def task10_triangle(example_lines=None):
     # Лабораторная 1, задача 10
     # Даны координаты трёх вершин треугольника. Найти его периметр и площадь.
     # Стороны считаем как расстояния между вершинами,
@@ -151,12 +164,12 @@ def task10_triangle(read_input):
 
     import math
 
-    x1 = float(read_input("x1 = "))
-    y1 = float(read_input("y1 = "))
-    x2 = float(read_input("x2 = "))
-    y2 = float(read_input("y2 = "))
-    x3 = float(read_input("x3 = "))
-    y3 = float(read_input("y3 = "))
+    x1 = float(read_line("x1 = ", example_lines))
+    y1 = float(read_line("y1 = ", example_lines))
+    x2 = float(read_line("x2 = ", example_lines))
+    y2 = float(read_line("y2 = ", example_lines))
+    x3 = float(read_line("x3 = ", example_lines))
+    y3 = float(read_line("y3 = ", example_lines))
 
     a = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
     b = math.sqrt((x3 - x2) ** 2 + (y3 - y2) ** 2)
@@ -164,29 +177,31 @@ def task10_triangle(read_input):
 
     P = a + b + c
     p = P / 2
-    # max(..., 0) защищает от крошечных отрицательных значений из-за погрешности вычислений
-    S = math.sqrt(max(p * (p - a) * (p - b) * (p - c), 0))
+    under_root = p * (p - a) * (p - b) * (p - c)
+    if under_root < 0:
+        under_root = 0
+    S = math.sqrt(under_root)
 
     print(f"Периметр P = {P}")
     print(f"Площадь S = {S}")
 
 
-def task11_function1(read_input):
+def task11_function1(example_lines=None):
     # Лабораторная 1, задача 11
     # Найти значение функции y = 3x^6 - 6x^2 - 7 при данном x.
 
-    x = float(read_input("Введите x: "))
+    x = float(read_line("Введите x: ", example_lines))
 
     y = 3 * x ** 6 - 6 * x ** 2 - 7
 
     print(f"y = {y}")
 
 
-def task12_function2(read_input):
+def task12_function2(example_lines=None):
     # Лабораторная 1, задача 12
     # Найти значение функции y = 4(x-3)^6 - 7(x-3)^3 + 2 при данном x.
 
-    x = float(read_input("Введите x: "))
+    x = float(read_line("Введите x: ", example_lines))
 
     t = x - 3  # выносим повторяющееся выражение в переменную
     y = 4 * t ** 6 - 7 * t ** 3 + 2
@@ -194,66 +209,100 @@ def task12_function2(read_input):
     print(f"y = {y}")
 
 
-def run_example(solve, example_inputs):
-    """Передаёт задаче готовые данные и показывает их в консоли."""
-    values = iter(example_inputs)
+TITLES = [
+    'Прямоугольник по сторонам',
+    'Длина окружности',
+    'Среднее двух чисел',
+    'Действия с квадратами',
+    'Действия с модулями',
+    'Расстояние между точками',
+    'Сумма длин отрезков',
+    'Произведение длин отрезков',
+    'Прямоугольник по вершинам',
+    'Треугольник по вершинам',
+    'Значение функции',
+    'Значение функции',
+]
 
-    def read_example(prompt=""):
-        value = next(values)
-        print(f"{prompt}{value}")
-        return value
-
-    solve(read_example)
-
-
-def run_selected(solve, example_inputs):
-    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
-    if not mode:
-        run_example(solve, example_inputs)
-    elif mode == "1":
-        solve(input)
-    else:
-        print("Для примера нажмите Enter, для ручного ввода введите 1.")
+EXAMPLES = [
+    ['3', '4'],
+    ['10'],
+    ['2', '8'],
+    ['-2', '1'],
+    ['-9', '3'],
+    ['0', '0', '3', '4'],
+    ['-1', '4', '1'],
+    ['0', '10', '3'],
+    ['3', '0', '0', '4'],
+    ['0', '0', '3', '0', '0', '4'],
+    ['1'],
+    ['4'],
+]
 
 
-TASKS = {
-    '1': ('Прямоугольник по сторонам', task01_rectangle, ('3', '4')),
-    '2': ('Длина окружности', task02_circle_length, ('10',)),
-    '3': ('Среднее двух чисел', task03_average, ('2', '8')),
-    '4': ('Действия с квадратами', task04_squares, ('-2', '1')),
-    '5': ('Действия с модулями', task05_abs, ('-9', '3')),
-    '6': ('Расстояние между точками', task06_distance, ('0', '0', '3', '4')),
-    '7': ('Сумма длин отрезков', task07_segments_sum, ('-1', '4', '1')),
-    '8': ('Произведение длин отрезков', task08_segments_product, ('0', '10', '3')),
-    '9': ('Прямоугольник по вершинам', task09_rectangle_by_vertices, ('3', '0', '0', '4')),
-    '10': ('Треугольник по вершинам', task10_triangle, ('0', '0', '3', '0', '0', '4')),
-    '11': ('Значение функции', task11_function1, ('1',)),
-    '12': ('Значение функции', task12_function2, ('4',)),
-}
+# Подготавливаю входные данные и обычным if выбираю нужную задачу.
+def run_task(number, use_example):
+    example_lines = None
+    if use_example:
+        # Копирую пример, потому что read_line забирает использованные строки.
+        example_lines = EXAMPLES[number - 1].copy()
+    if number == 1:
+        task01_rectangle(example_lines)
+    elif number == 2:
+        task02_circle_length(example_lines)
+    elif number == 3:
+        task03_average(example_lines)
+    elif number == 4:
+        task04_squares(example_lines)
+    elif number == 5:
+        task05_abs(example_lines)
+    elif number == 6:
+        task06_distance(example_lines)
+    elif number == 7:
+        task07_segments_sum(example_lines)
+    elif number == 8:
+        task08_segments_product(example_lines)
+    elif number == 9:
+        task09_rectangle_by_vertices(example_lines)
+    elif number == 10:
+        task10_triangle(example_lines)
+    elif number == 11:
+        task11_function1(example_lines)
+    elif number == 12:
+        task12_function2(example_lines)
 
 
 def main():
     print('Лабораторная работа № 1 «Линейные алгоритмы»')
-    for number, (title, _, _) in TASKS.items():
-        print(f"{number}. {title}")
+    for index in range(len(TITLES)):
+        print(f"{index + 1}. {TITLES[index]}")
 
     choice = input("Номер задачи или Enter / 0 — все примеры: ").strip()
-    if choice in ("", "0"):
-        for number, (title, solve, example_inputs) in TASKS.items():
-            print(f"\n=== Задача {number}. {title} ===")
-            run_example(solve, example_inputs)
-        print(f"\nВыполнено примеров: {len(TASKS)}")
+    if choice == "" or choice == "0":
+        # Общий прогон подставляет пример для каждой задачи по очереди.
+        for number in range(1, len(TITLES) + 1):
+            print(f"\n=== Задача {number}. {TITLES[number - 1]} ===")
+            run_task(number, True)
+        print(f"\nВыполнено примеров: {len(TITLES)}")
         return
 
-    number = choice.lstrip("0")
-    task = TASKS.get(number)
-    if task is None:
+    choice = choice.lstrip("0")
+    if not choice.isdecimal() or len(choice) > 2:
+        print("Нет задачи с таким номером.")
+        return
+    number = int(choice)
+    if number < 1 or number > len(TITLES):
         print("Нет задачи с таким номером.")
         return
 
-    title, solve, example_inputs = task
-    print(f"\n=== Задача {number}. {title} ===")
-    run_selected(solve, example_inputs)
+    print(f"\n=== Задача {number}. {TITLES[number - 1]} ===")
+    mode = input("Enter — пример, 1 — ручной ввод: ").strip()
+    if mode == "":
+        run_task(number, True)
+    elif mode == "1":
+        run_task(number, False)
+    else:
+        print("Для примера нажмите Enter, для ручного ввода введите 1.")
 
 
 if __name__ == "__main__":

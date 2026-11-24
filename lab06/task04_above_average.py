@@ -7,13 +7,19 @@ N = int(input("Количество столбцов N: "))
 matrix = []
 print(f"Введите {M} строк по {N} чисел через пробел:")
 for i in range(M):
-    matrix.append(list(map(float, input().split())))
+    parts = input().split()
+    row = []
+    for part in parts:
+        row.append(float(part))
+    matrix.append(row)
 
 for j in range(N):
-    column = [matrix[i][j] for i in range(M)]
+    column = []
+    for i in range(M):
+        column.append(matrix[i][j])
     average = sum(column) / M
     count = 0
-    for x in column:
-        if x > average:
+    for value in column:
+        if value > average:
             count += 1
     print(f"Столбец {j + 1}: среднее = {average:.2f}, больше среднего: {count}")

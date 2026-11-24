@@ -8,7 +8,11 @@ N = int(input("Количество столбцов N: "))
 matrix = []
 print(f"Введите {M} строк по {N} чисел через пробел:")
 for i in range(M):
-    matrix.append(list(map(float, input().split())))
+    parts = input().split()
+    row = []
+    for part in parts:
+        row.append(float(part))
+    matrix.append(row)
 
 for i in range(1, M):
     current_row = matrix[i]
@@ -20,4 +24,8 @@ for i in range(1, M):
 
 print("Результат:")
 for row in matrix:
-    print(*row)
+    for i in range(len(row)):
+        if i > 0:
+            print(" ", end="")
+        print(row[i], end="")
+    print()

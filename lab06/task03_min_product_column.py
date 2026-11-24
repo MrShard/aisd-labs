@@ -7,7 +7,11 @@ N = int(input("Количество столбцов N: "))
 matrix = []
 print(f"Введите {M} строк по {N} чисел через пробел:")
 for i in range(M):
-    matrix.append(list(map(float, input().split())))
+    parts = input().split()
+    row = []
+    for part in parts:
+        row.append(float(part))
+    matrix.append(row)
 
 best_column = 0
 best_product = None

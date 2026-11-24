@@ -6,19 +6,18 @@
 #   3) перенести n-1 дисков с helper на target.
 # Всего ходов: 2^n - 1.
 
-moves = 0
-
-
-def hanoi(n, source, target, helper):
-    global moves
+def hanoi(n, source, target, helper, moves=0):
     if n == 0:
-        return
-    hanoi(n - 1, source, helper, target)
+        return moves
+
+    moves = hanoi(n - 1, source, helper, target, moves)
+
     moves += 1
     print(f"Ход {moves}: диск {n} со стержня {source} на стержень {target}")
-    hanoi(n - 1, helper, target, source)
+
+    return hanoi(n - 1, helper, target, source, moves)
 
 
 n = int(input("Количество дисков: "))
-hanoi(n, "A", "C", "B")
+moves = hanoi(n, "A", "C", "B")
 print(f"Всего ходов: {moves}")

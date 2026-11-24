@@ -7,7 +7,10 @@ B = int(input("B = "))
 
 # В Python вместо фигурных скобок — двоеточие и отступ.
 if A != B:
-    biggest = max(A, B)
+    if A > B:
+        biggest = A
+    else:
+        biggest = B
     A = biggest
     B = biggest
 else:

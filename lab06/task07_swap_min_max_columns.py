@@ -7,7 +7,11 @@ N = int(input("Количество столбцов N: "))
 matrix = []
 print(f"Введите {M} строк по {N} чисел через пробел:")
 for i in range(M):
-    matrix.append(list(map(float, input().split())))
+    parts = input().split()
+    row = []
+    for part in parts:
+        row.append(float(part))
+    matrix.append(row)
 
 min_col = 0
 max_col = 0
@@ -24,11 +28,17 @@ for i in range(M):
 
 # меняем местами элементы двух столбцов в каждой строке
 for i in range(M):
-    matrix[i][min_col], matrix[i][max_col] = matrix[i][max_col], matrix[i][min_col]
+    saved_value = matrix[i][min_col]
+    matrix[i][min_col] = matrix[i][max_col]
+    matrix[i][max_col] = saved_value
 
 print(f"Минимум в столбце {min_col + 1}, максимум в столбце {max_col + 1}")
 if min_col == max_col:
     print("Это один и тот же столбец — матрица не меняется")
 print("Результат:")
 for row in matrix:
-    print(*row)
+    for i in range(len(row)):
+        if i > 0:
+            print(" ", end="")
+        print(row[i], end="")
+    print()
